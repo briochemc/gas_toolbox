@@ -1,7 +1,7 @@
 % u10 = calc_u10(umeas,hmeas)
 %
 % USAGE:-------------------------------------------------------------------
-% 
+%
 % [u10] = calc_u10(5,4)
 %
 % >u10 = 5.5302
@@ -15,15 +15,12 @@
 %
 % OUTPUTS:-----------------------------------------------------------------
 %
-% Fs:   Surface gas flux                              (mol m-2 s-1)
-% Fp:   Flux from partially collapsing large bubbles  (mol m-2 s-1)
-% Fc:   Flux from fully collapsing small bubbles      (mol m-2 s-1)
-% Deq:  Equilibrium supersaturation                   (unitless (%sat/100))
+% u10 (m/s)
 %
 % REFERENCE:---------------------------------------------------------------
 %
 % Hsu S, Meindl E A and Gilhousen D B (1994) Determining the Power-Law
-%    Wind-Profile Exponent under Near-Neutral Stability Conditions at Sea 
+%    Wind-Profile Exponent under Near-Neutral Stability Conditions at Sea
 %    J. Appl. Meteor. 33 757-765
 %
 % AUTHOR:---------------------------------------------------------------
@@ -33,7 +30,7 @@
 %
 % COPYRIGHT:---------------------------------------------------------------
 %
-% Copyright 2015 Cara Manning 
+% Copyright 2015 Cara Manning
 %
 % Licensed under the Apache License, Version 2.0 (the "License");
 % you may not use this file except in compliance with the License.
