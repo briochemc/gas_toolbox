@@ -3,14 +3,22 @@ function [Ks, Kp, Kc, Fd, Fp, Fc, Deq] = fas_E19v2(gas, u10, SP, pt, C, pslp, rh
 % parameterization
 %
 % USAGE:-------------------------------------------------------------------
-% [Ks, Kp, Kc, Fd, Fp, Fc, Deq] = fas_E19v2(gas, u10, SP, pt, C, pslp, rh)
-% [Ks, Kp, Kc, Fd, Fp, Fc, Deq] = fas_E19v2('Ar',5,35,10,0.01410,1)
-%   >Fd = -5.6030e-09
-%   >Fc = 5.0339e-11
-%   >Fp = -2.4485e-10
-%   >Deq = 0.0012
-%   >k = 2.0377e-05
+% [Ks, Kp, Kc, Fd, Fp, Fc, Deq] = fas_E19v2(gas, u10, SP, pt, [C, pslp, rh])
 %
+% EXAMPLES:----------------------------------------------------------------
+% [Ks, Kp, Kc, Fd, Fp, Fc, Deq] = fas_E19v2('Ar',5,35,10,0.01410,1)
+% > Ks = 2.0377e-05
+% > Kp = 1.3436e-06
+% > Kc = 5.3942e-09
+% > Fd = -5.6030e-09
+% > Fp = -2.4485e-10
+% > Fc = 5.0339e-11
+% > Deq = 5.8254e-04
+%
+% [Ks, Kp, Kc] = fas_E19v2('Ar',5,35,10)
+% > Ks = 2.0377e-05
+% > Kp = 1.3436e-06
+% > Kc = 5.3942e-09
 %
 % DESCRIPTION:-------------------------------------------------------------
 %
@@ -75,8 +83,12 @@ function [Ks, Kp, Kc, Fd, Fp, Fc, Deq] = fas_E19v2(gas, u10, SP, pt, C, pslp, rh
 % Licensed under the Apache License, Version 2.0 (the "License");
 % you may not use this file except in compliance with the License, which
 % is available at http://www.apache.org/licenses/LICENSE-2.0
+%
+% MODIFICATIONS:---------------------------------------------------------------
+%
+% Modified by Benoit Pasquier b.pasquier@unsw.edu.au for use in PCO2 model
 
-% Some default values for arguments not provided?
+% Added some default values for C and pslp in case only k's output is required
 arguments
     gas                  % string for gas (He, Ne, Ar, Kr, Xe, N2, or O2)
     u10                  % 10 m wind speed (m/s)
