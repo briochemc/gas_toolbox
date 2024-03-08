@@ -1,10 +1,10 @@
-function [Ks, Kp, Kc, Fd, Fp, Fc, Deq] = fas_E19v2(C, u10, SP, pt, pslp, gas, rh)
+function [Ks, Kp, Kc, Fd, Fp, Fc, Deq] = fas_E19v2(gas, u10, SP, pt, C, pslp, rh)
 % fas_E19: Function to calculate air-sea fluxes with Liang 2013
 % parameterization
 %
 % USAGE:-------------------------------------------------------------------
-% [Ks, Kp, Kc, Fd, Fp, Fc, Deq] = fas_E19v2(C, u10, SP, pt, pslp, gas, rh)
-% [Ks, Kp, Kc, Fd, Fp, Fc, Deq] = fas_E19v2(0.01410,5,35,10,1,'Ar')
+% [Ks, Kp, Kc, Fd, Fp, Fc, Deq] = fas_E19v2(gas, u10, SP, pt, C, pslp, rh)
+% [Ks, Kp, Kc, Fd, Fp, Fc, Deq] = fas_E19v2('Ar',5,35,10,0.01410,1)
 %   >Fd = -5.6030e-09
 %   >Fc = 5.0339e-11
 %   >Fp = -2.4485e-10
@@ -76,13 +76,14 @@ function [Ks, Kp, Kc, Fd, Fp, Fc, Deq] = fas_E19v2(C, u10, SP, pt, pslp, gas, rh
 % you may not use this file except in compliance with the License, which
 % is available at http://www.apache.org/licenses/LICENSE-2.0
 
+% Some default values for arguments not provided?
 arguments
-    C                    % gas concentration (mol m-3)
+    gas                  % string for gas (He, Ne, Ar, Kr, Xe, N2, or O2)
     u10                  % 10 m wind speed (m/s)
     SP                   % Sea surface salinity (PSS)
     pt                   % Sea surface temperature (deg C)
-    pslp                 % sea level pressure (atm)
-    gas                  % string for gas (He, Ne, Ar, Kr, Xe, N2, or O2)
+    C = gasmolfract(gas) % gas concentration (mol m-3)
+    pslp = 1             % sea level pressure (atm)
     rh = ones(size(C))   % relative humidity as a fraction of saturation
 end
 
@@ -95,16 +96,6 @@ bfact = 0.37;
 m2cm = 100; % cm in a meter
 h2s = 3600; % sec in hour
 atm2Pa = 1.01325e5; % Pascals per atm
-
-% -------------------------------------------------------------------------
-% Calculate water vapor pressure and adjust sea level pressure
-% -------------------------------------------------------------------------
-ph2oveq = vpress(SP, pt);
-ph2ov = rh .* ph2oveq;
-
-% slpc = (observed dry air pressure)/(reference dry air pressure)
-% see Description section in header of fas_N11.m
-pslpc = (pslp - ph2ov) ./ (1 - ph2oveq);
 
 % -------------------------------------------------------------------------
 % Parameters for COARE 3.0 calculation
@@ -131,11 +122,9 @@ R = 8.314;  % units: m3 Pa K-1 mol-1
 % -------------------------------------------------------------------------
 % Calculate gas physical properties
 % -------------------------------------------------------------------------
-xG = gasmolfract(gas);
 Geq = gasmoleq(SP, pt, gas);
 alc = (Geq / atm2Pa) .* R .* (pt+273.15);
 
-Gsat = C ./ Geq;
 [~, ScW] = gasmoldiff(SP, pt, gas);
 
 % -------------------------------------------------------------------------
@@ -171,6 +160,16 @@ if nargout <= 3, return, end
 % -------------------------------------------------------------------------
 % Calculate air-sea fluxes
 % -------------------------------------------------------------------------
+% Calculate water vapor pressure and adjust sea level pressure
+ph2oveq = vpress(SP, pt);
+ph2ov = rh .* ph2oveq;
+% slpc = (observed dry air pressure)/(reference dry air pressure)
+% see Description section in header of fas_N11.m
+pslpc = (pslp - ph2ov) ./ (1 - ph2oveq);
+
+Gsat = C ./ Geq;
+xG = gasmolfract(gas);
+
 Fd = Ks .* Geq .* (pslpc - Gsat); % Fd in L13 eqn 3
 Fp = Kp .* Geq .* ((1 + dP) .* pslpc - Gsat); % Fp in L13 eqn 3
 Fc = Kc .* xG; % L13 eqn 15
