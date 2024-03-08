@@ -1,10 +1,10 @@
-function [Fd, Fc, Fp, Deq, Ks] = fas_E19(C, u10, SP, pt, pslp, gas, rh)
+function [Ks, Kp, Kc, Fd, Fp, Fc, Deq] = fas_E19v2(C, u10, SP, pt, pslp, gas, rh)
 % fas_E19: Function to calculate air-sea fluxes with Liang 2013
 % parameterization
 %
 % USAGE:-------------------------------------------------------------------
-% [Fd, Fc, Fp, Deq, k] = fas_E19(C,u10,S,T,slp,gas,rh)
-% [Fd, Fc, Fp, Deq, k] = fas_E19(0.01410,5,35,10,1,'Ar')
+% [Ks, Kp, Kc, Fd, Fp, Fc, Deq] = fas_E19v2(C, u10, SP, pt, pslp, gas, rh)
+% [Ks, Kp, Kc, Fd, Fp, Fc, Deq] = fas_E19v2(0.01410,5,35,10,1,'Ar')
 %   >Fd = -5.6030e-09
 %   >Fc = 5.0339e-11
 %   >Fp = -2.4485e-10
@@ -158,21 +158,28 @@ rat = ha .* sqrt(ScA) + 1 ./ sqrt(cd10) - 5 + 0.5 * log(ScA) / 0.4;
 Ks = ustar ./ (rwt + rat .* alc);
 
 % bubble transfer velocity (L13 eqn 14)
-Kb = bfact .* 1.98e6 .* ustarw.^2.76 .* (ScW ./ 660).^(-2/3) ./ (m2cm .* h2s);
+Kp = bfact .* 1.98e6 .* ustarw.^2.76 .* (ScW ./ 660).^(-2/3) ./ (m2cm .* h2s);
 
 % overpressure dependence on windspeed (L13 eqn 16)
 dP = 1.5244 .* ustarw.^1.06;
 
+% bubble transfer velocity (dervied from L13 eqn 15)
+Kc = bfact .* 5.56 .* ustarw.^3.86;
+
+if nargout <= 3, return, end
+
 % -------------------------------------------------------------------------
 % Calculate air-sea fluxes
 % -------------------------------------------------------------------------
-Fd = Ks .* Geq .* (pslpc - Gsat); % Fs in L13 eqn 3
-Fp = Kb .* Geq .* ((1 + dP) .* pslpc - Gsat); % Fp in L13 eqn 3
-Fc = bfact .* xG .* 5.56 .* ustarw.^3.86; % L13 eqn 15
+Fd = Ks .* Geq .* (pslpc - Gsat); % Fd in L13 eqn 3
+Fp = Kp .* Geq .* ((1 + dP) .* pslpc - Gsat); % Fp in L13 eqn 3
+Fc = Kc .* xG; % L13 eqn 15
+
+if nargout <= 6, return, end
 
 % -------------------------------------------------------------------------
 % Calculate steady-state supersaturation
 % -------------------------------------------------------------------------
-Deq = (Kb .* Geq .* dP .* pslpc + Fc) ./ ((Kb + Ks) .* Geq .* pslpc); % L13 eqn 5
+Deq = (Kp .* Geq .* dP .* pslpc + Fc) ./ ((Kp + Ks) .* Geq .* pslpc); % L13 eqn 5
 
 
