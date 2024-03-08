@@ -75,8 +75,6 @@ function [Fd, Fc, Fp, Deq, Ks] = fas_E19(C, u10, SP, pt, pslp, gas, rh)
 % Licensed under the Apache License, Version 2.0 (the "License");
 % you may not use this file except in compliance with the License, which
 % is available at http://www.apache.org/licenses/LICENSE-2.0
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 arguments
     C                    % gas concentration (mol m-3)
