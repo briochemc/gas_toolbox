@@ -13,9 +13,9 @@
 % DESCRIPTION:-------------------------------------------------------------
 %
 % Calculate air-sea fluxes and steady-state supersat based on:
-% Liang, J.-H., C. Deutsch, J. C. McWilliams, B. Baschek, P. P. Sullivan, 
-% and D. Chiba (2013), Parameterizing bubble-mediated air-sea gas exchange 
-% and its effect on ocean ventilation, Global Biogeochem. Cycles, 27, 
+% Liang, J.-H., C. Deutsch, J. C. McWilliams, B. Baschek, P. P. Sullivan,
+% and D. Chiba (2013), Parameterizing bubble-mediated air-sea gas exchange
+% and its effect on ocean ventilation, Global Biogeochem. Cycles, 27,
 % 894?905, doi:10.1002/gbc.20080.
 %
 % INPUTS:------------------------------------------------------------------
@@ -37,8 +37,8 @@
 %       Ar      Argon           Hamme and Emerson 2004
 %       Kr      Krypton         Weiss and Keiser 1978
 %       Xe      Xenon           Wood and Caputi 1966
-%       N2      Nitrogen        Hamme and Emerson 2004   
-%       O2      Oxygen          Garcia and Gordon 1992  
+%       N2      Nitrogen        Hamme and Emerson 2004
+%       O2      Oxygen          Garcia and Gordon 1992
 %
 % OUTPUTS:-----------------------------------------------------------------
 %
@@ -52,9 +52,9 @@
 %
 % REFERENCE:---------------------------------------------------------------
 %
-% Liang, J.-H., C. Deutsch, J. C. McWilliams, B. Baschek, P. P. Sullivan, 
-%   and D. Chiba (2013), Parameterizing bubble-mediated air-sea gas 
-%   exchange and its effect on ocean ventilation, Global Biogeochem. Cycles, 
+% Liang, J.-H., C. Deutsch, J. C. McWilliams, B. Baschek, P. P. Sullivan,
+%   and D. Chiba (2013), Parameterizing bubble-mediated air-sea gas
+%   exchange and its effect on ocean ventilation, Global Biogeochem. Cycles,
 %   27, 894?905, doi:10.1002/gbc.20080.
 %
 % AUTHOR:---------------------------------------------------------------
@@ -65,10 +65,10 @@
 %
 % COPYRIGHT:---------------------------------------------------------------
 %
-% Copyright 2017 David Nicholson and Cara Manning 
+% Copyright 2017 David Nicholson and Cara Manning
 %
 % Licensed under the Apache License, Version 2.0 (the "License");
-% you may not use this file except in compliance with the License, which 
+% you may not use this file except in compliance with the License, which
 % is available at http://www.apache.org/licenses/LICENSE-2.0
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -164,17 +164,9 @@ Fp = Kb.*Geq.*((1+dP).*pslpc-Gsat); % Fp in L13 eqn 3
 Fc = xG.*5.56.*ustarw.^3.86; % L13 eqn 15
 
 % -------------------------------------------------------------------------
-% Calculate steady-state supersaturation 
+% Calculate steady-state supersaturation
 % -------------------------------------------------------------------------
 Deq = (Kb.*Geq.*dP.*pslpc+Fc)./((Kb+Ks).*Geq.*pslpc); % L13 eqn 5
 
 end
 
-function [ cd ] = cdlp81( u10)
-% Calculates drag coefficient from u10, wind speed at 10 m height
-
-cd = (4.9e-4 + 6.5e-5 * u10);
-cd(u10 <= 11) = 0.0012;
-cd(u10 >= 20) = 0.0018;
-
-end

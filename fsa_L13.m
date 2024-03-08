@@ -17,15 +17,15 @@
 % DESCRIPTION:-------------------------------------------------------------
 %
 % Calculate air-sea fluxes and steady-state supersat based on:
-% Liang, J.-H., C. Deutsch, J. C. McWilliams, B. Baschek, P. P. Sullivan, 
-% and D. Chiba (2013), Parameterizing bubble-mediated air-sea gas exchange 
-% and its effect on ocean ventilation, Global Biogeochem. Cycles, 27, 
+% Liang, J.-H., C. Deutsch, J. C. McWilliams, B. Baschek, P. P. Sullivan,
+% and D. Chiba (2013), Parameterizing bubble-mediated air-sea gas exchange
+% and its effect on ocean ventilation, Global Biogeochem. Cycles, 27,
 % 894?905, doi:10.1002/gbc.20080.
 %
 % INPUTS:------------------------------------------------------------------
 % Cw:   dissolved gas concentration (mol m-3)
 % Ca:   Concentration in equilibrium with overlying atmosphere (mol m-3)
-%        Ca = K0 * pG  or also Ca = K0 * xG * (slp - rh * vpress) 
+%        Ca = K0 * pG  or also Ca = K0 * xG * (slp - rh * vpress)
 %       where pG is actual partial pressure (atm) and xG is dry mol/mol
 % u10:  10 m wind speed (m/s)
 % SP:   Sea surface salinity (PSS)
@@ -44,8 +44,8 @@
 %       Ar      Argon           Hamme and Emerson 2004
 %       Kr      Krypton         Weiss and Keiser 1978
 %       Xe      Xenon           Wood and Caputi 1966
-%       N2      Nitrogen        Hamme and Emerson 2004   
-%       O2      Oxygen          Garcia and Gordon 1992  
+%       N2      Nitrogen        Hamme and Emerson 2004
+%       O2      Oxygen          Garcia and Gordon 1992
 %
 % OUTPUTS:-----------------------------------------------------------------
 %
@@ -59,9 +59,9 @@
 %
 % REFERENCE:---------------------------------------------------------------
 %
-% Liang, J.-H., C. Deutsch, J. C. McWilliams, B. Baschek, P. P. Sullivan, 
-%   and D. Chiba (2013), Parameterizing bubble-mediated air-sea gas 
-%   exchange and its effect on ocean ventilation, Global Biogeochem. Cycles, 
+% Liang, J.-H., C. Deutsch, J. C. McWilliams, B. Baschek, P. P. Sullivan,
+%   and D. Chiba (2013), Parameterizing bubble-mediated air-sea gas
+%   exchange and its effect on ocean ventilation, Global Biogeochem. Cycles,
 %   27, 894?905, doi:10.1002/gbc.20080.
 %
 % AUTHOR:---------------------------------------------------------------
@@ -72,10 +72,10 @@
 %
 % COPYRIGHT:---------------------------------------------------------------
 %
-% Copyright 2017 David Nicholson and Cara Manning 
+% Copyright 2017 David Nicholson and Cara Manning
 %
 % Licensed under the Apache License, Version 2.0 (the "License");
-% you may not use this file except in compliance with the License, which 
+% you may not use this file except in compliance with the License, which
 % is available at http://www.apache.org/licenses/LICENSE-2.0
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -157,17 +157,8 @@ Fp = Kb.*(Cw - Ca_mmolm3.*(1+dP)); % Fp in L13 eqn 3
 Fc = -xG.*5.56.*ustarw.^3.86; % L13 eqn 15
 
 % -------------------------------------------------------------------------
-% Calculate steady-state supersaturation 
+% Calculate steady-state supersaturation
 % -------------------------------------------------------------------------
 Deq = (Kb.*Ca_mmolm3.*dP-Fc)./((Kb+Ks).*Ca_mmolm3); % L13 eqn 5
-
-end
-
-function [ cd ] = cdlp81( u10)
-% Calculates drag coefficient from u10, wind speed at 10 m height
-
-cd = (4.9e-4 + 6.5e-5 * u10);
-cd(u10 <= 11) = 0.0012;
-cd(u10 >= 20) = 0.0018;
 
 end
